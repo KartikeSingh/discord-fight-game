@@ -1,0 +1,29 @@
+{
+  "name": "discord-fight-game",
+  "version": "0.0.1",
+  "description": "An module to make a Player VS Player game for discord bots.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KartikeSingh/discord-fight-game.git"
+  },
+  "keywords": [
+    "discord",
+    "game",
+    "fight",
+    "pvp"
+  ],
+  "author": "shisui",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KartikeSingh/discord-fight-game/issues"
+  },
+  "homepage": "https://github.com/KartikeSingh/discord-fight-game#readme",
+  "dependencies": {
+    "discord.js": "^13.1.0",
+    "test": "^0.6.0"
+  }
+}
