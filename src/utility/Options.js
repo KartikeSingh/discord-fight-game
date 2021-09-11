@@ -13,11 +13,11 @@ class options {
         if (typeof (startHealth) !== "number" || startHealth < 1) throw new Error("Invalid start health, it should be at least 1 but we got " + startHealth);
 
         [defenseSuccessRateAgainstDefense, maxDefense, minDefense, maxMelee, minMelee, maxRanged, minRanged, defenseTimeoutRate, meleeTimeoutRate, meleeSuccessRate, rangedTimeoutRate, rangedSuccessRate, defenseSuccessRateAgainstRanged, defenseSuccessRateAgainstMelee].forEach(v => {
-            if (typeof (v) !== "number" || v < 0 || v > this.startHealth) throw new Error(`Invalid Success rate was provided, it should be a number between 0.0 to 100.0`);
+            if (typeof (v) !== "number" || v < 0 || v > 100) throw new Error(`Invalid Success rate was provided, it should be a number between 0.0 to 100.0`);
         });
 
         [[maxDefense, minDefense], [maxMelee, minMelee], [maxRanged, minRanged]].forEach((v, i) => {
-            if (v[0] < v[i]) throw new Error(`Maximum ${i === 1 ? "Defense" : i === 2 ? "Melee" : "Ranged"} attack points is less than their minimum point, Which is invalid`)
+            if (v[0] < v[i]) throw new Error(`Maximum ${i === 1 ? threeName : i === 2 ? oneName : twoName} attack points is less than their minimum point, Which is invalid`)
         })
 
         this.oneName = oneName;
