@@ -27,12 +27,12 @@ module.exports = function (player1, message, timeout) {
         collector.on('end', (shit, reason) => {
             if (reason === "time") {
                 msg.edit({ embeds: [{ color: "RED", title: player1.username + ", You took way to much time to respond so game is ended" }], components: [] })
-                message.channel.send({ embeds: [{ color: "GREEN", title: `Game ended, Because ${player1.username} took too much time to respond` }] })
+                message.channel.send({ embeds: [{ color: "GREEN", title: that.options.timeEndMessage.replace(/{user}/g, player1.username) }] })
 
                 return resolve("end");
             } else if (reason === 4) {
                 msg.edit({ embeds: [{ color: "GREEN", title: "Game ended successfully" }], components: [] })
-                message.channel.send({ embeds: [{ color: "GREEN", title: `${player1.username} ended the game forcefully.` }] })
+                message.channel.send({ embeds: [{ color: "GREEN", title: that.options.forceEndMessage.replace(/{user}/g, player1.username) }] })
 
                 return resolve("end");
             } else {

@@ -34,14 +34,71 @@ fight.duo(message,player2)
 ```
 
 # Advanced 
+
+## Custom Messages And Buttons
 ```js
 const game = require('discord-fight-game');
 
-const fight = new game(client,options);
+const fight = new game(client, {
+    // Custom Buttons
+    oneName: "Sword",
+    oneEmoji: "🤺",
+    twoName: "Bow",
+    twoEmoji: "🏹",
+    threeName: "Shield",
+    threeEmoji: "🛡",
+    endName: "End Game",
+    endEmoji: "🛑",
 
-// List of options : 
+    // Custom Messages
+    startMessage: "The war has begun, get ready warriors",
+    midMessage: "The fighters chose their move, Current battle condition :",
+    endMessage: "{winner} gloriously defeated {looser}",
+    forceEndMessage: "{user} was scared so they ended the war",
+    timeEndMessage: "{user} ran away from the war",
+})
+```
+
+## Custom Game logic
+```js
+const game = require('discord-fight-game');
+
+const fight = new game(client,{
+    //  Starting health of players
+    startHealth: 69,
+
+    // Melee move's settings ( First / One Move )
+    maxMelee: 18, // Maximum Melee damage possible
+    minMelee: 5, // Minimum Melee damage possible
+    meleeSuccessRate: 50, // Chance of successful attack
+    meleeTimeoutRate: 30, // Chances of getting timedout from using Melee attack again
+
+    // Ranged move's settings ( Second / Two Move )
+    maxRanged: 12, // Maximum Ranged damage possible
+    minRanged: 6, // Minimum Ranged damage possible
+    rangedSuccessRate: 70, // Chance of successful attack
+    rangedTimeoutRate: 20, // Chances of getting timedout from using Ranged attack again
+
+    // Defense move's settings ( Third / Three Move )
+    maxDefense: 10, // Maximum defense damage possible
+    minDefense: 2, // Minimum defense damage possible
+    defenseSuccessRateAgainstDefense: 50, // Chance of successful defense against defense
+    defenseSuccessRateAgainstMelee: 60, // Chance of successful defense against Melee
+    defenseSuccessRateAgainstRanged: 35, // Chance of successful defense against Ranged
+    defenseTimeoutRate: 55,// Chances of getting timedout from using defense again  
+});
+
+```
+
+# All Available Options
+```js
 /**
   * @typedef {Object} Options The options of fighting module
+  * @property {String} startMessage The message title during game's starting
+  * @property {String} midMessage The message title when both user chose their move
+  * @property {String} endMessage The message title at the end of the game
+  * @property {String} forceEndMessage The message title when game is ended forcefully
+  * @property {String} timeEndMessage The message title when user didn't responded to bot's DM
   * @property {String} oneName First move's name
   * @property {String} oneEmoji First move's emoji
   * @property {String} twoName Second move's name

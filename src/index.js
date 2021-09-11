@@ -2,6 +2,11 @@ const Discord = require('discord.js');
 const { Options, getMove, getResult, getContent } = require('./utility');
 
 class fight {
+    /**
+     * 
+     * @param {Discord.Client} client 
+     * @param {fightOptions} options 
+     */
     constructor(client, options = {}) {
         this.client = client;
         this.options = new Options(options);
@@ -12,8 +17,8 @@ class fight {
      * @param {Discord.Message} message The messages in which command was used
      */
     async solo(message) {
-        let userHealth = 100, botHealth = 100, userTiemout = [];
-        let msg = await message.channel.send({ embeds: [{ color: "DARK_NAVY", title: "The Game has started" }] });
+        let userHealth = this.options.startHealth, botHealth = this.options.startHealth, userTiemout = [];
+        let msg = await message.channel.send({ embeds: [{ color: "DARK_NAVY", title: this.options.startMessage }] });
 
         while (userHealth > 0 && botHealth > 0) {
             const userChoice = await getMove.bind(this)(message.author, message, userTiemout);
@@ -31,14 +36,12 @@ class fight {
             const user2Move = player2Choice === 1 ? this.options.oneName : player2Choice === 2 ? this.options.twoName : this.options.threeName;
 
             let content = getContent(result, message.author, this.client.user, userMove, user2Move);
-            let title = "Everyone chose their moves, Current Condtions :";
+            let title = this.options.midMessage;
 
-            if (userHealth < 1) title = "Game Ended, Krazy Bot Won 👑";
-            else if (botHealth < 1) title = `Game Ended, ${message.author.username} Won 👑`;
+            if (botHealth < 1) title = this.options.endMessage.replace(/{winner}/g, message.author.username).replace(/{looser}/g, this.client.user.username);
+            else if (userHealth < 1) title = this.options.endMessage.replace(/{winner}/g, this.client.user.username).replace(/{looser}/g, message.author.username);
 
-            if (userHealth < 1 || botHealth < 1) content = "Game ended";
-
-            msg.edit({ embeds: [{ title: title, description: content }] });
+            msg.edit({ embeds: [{ title: title, description: userHealth < 1 || botHealth < 1 ? "" : content }] });
         }
     }
 
@@ -48,8 +51,8 @@ class fight {
      * @param {Discord.User} player2 The player 2
      */
     async duo(message, player2) {
-        let userHealth = 100, user2Health = 100, userTiemout = [], user2Tiemout = [];
-        let msg = await message.channel.send({ embeds: [{ color: "DARK_NAVY", title: "The Game has started" }] });
+        let userHealth = this.options.startHealth, user2Health = this.options.startHealth, userTiemout = [], user2Tiemout = [];
+        let msg = await message.channel.send({ embeds: [{ color: "DARK_NAVY", title: this.options.startMessage }] });
 
         while (userHealth > 0 && user2Health > 0) {
             const userChoice = await getMove.bind(this)(message.author, message, userTiemout);
@@ -68,16 +71,48 @@ class fight {
             const user2Move = player2Choice === 1 ? this.options.oneName : player2Choice === 2 ? this.options.twoName : this.options.threeName;
 
             let content = getContent(result, message.author, player2, userMove, user2Move);
-            let title = "Everyone chose their moves, Current Condtions :";
+            let title = this.options.midMessage;
 
-            if (userHealth < 1) title = `Game Ended, ${player2.username} Won 👑`;
-            else if (user2Health < 1) title = `Game Ended, ${message.author.username} Won 👑`;
+            if (user2Health < 1) title = this.options.endMessage.replace(/{winner}/g, message.author.username).replace(/{looser}/g, player2.username);
+            else if (userHealth < 1) title = this.options.endMessage.replace(/{looser}/g, message.author.username).replace(/{winner}/g, player2.username);
 
             if (userHealth < 1 || user2Health < 1) content = "Game ended";
 
-            msg.edit({ embeds: [{ title: title, description: content }] });
+            msg.edit({ embeds: [{ title: title, description: userHealth < 1 || user2Health < 1 ? "" : content }] });
         }
     }
 }
 
 module.exports = fight;
+
+/**
+  * @typedef {Object} fightOptions The options of fighting module
+  * @property {String} startMessage The message title during game's starting
+  * @property {String} midMessage The message title when both user chose their move
+  * @property {String} endMessage The message title at the end of the game
+  * @property {String} forceEndMessage The message title when game is ended forcefully
+  * @property {String} timeEndMessage The message title when user didn't responded to bot's DM
+  * @property {String} oneName First move's name
+  * @property {String} oneEmoji First move's emoji
+  * @property {String} twoName Second move's name
+  * @property {String} twoEmoji Second move's emoji
+  * @property {String} threeName Third move's name
+  * @property {String} threeEmoji Third move's emoji
+  * @property {String} endName Game end's name
+  * @property {String} endEmoji Game end's emoji
+  * @property {Number} startHealth The starting health of players
+  * @property {Number} defenseSuccessRateAgainstDefense Success rate of defending against enemy defending
+  * @property {Number} defenseSuccessRateAgainstMelee Success rate of defending against enemy using melee move
+  * @property {Number} defenseSuccessRateAgainstRanged Success rate of defending against enemy using ranged move
+  * @property {Number} maxDefense Maximum defense points
+  * @property {Number} minDefense Minimum defense points
+  * @property {Number} defenseTimeoutRate Chances to get timeout to use defense move
+  * @property {Number} maxMelee Maximum Melee points
+  * @property {Number} minMelee Minimum Melee points
+  * @property {Number} meleeSuccessRate Chances of Melee move success
+  * @property {Number} meleeTimeoutRate Chances to get timeout to use melee move
+  * @property {Number} maxRanged Maximum Ranged points
+  * @property {Number} minRanged Minimum Ranged points
+  * @property {Number} rangedTimeoutRate Chances to get timeout to use ranged move
+  * @property {Number} rangedSuccessRate Chances of Ranged move success
+  */

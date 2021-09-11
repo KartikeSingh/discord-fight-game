@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/KartikeSingh/discord-fight-game#readme",
   "dependencies": {
-    "discord.js": "^13.1.0",
-    "test": "^0.6.0"
+    "discord.js": "^13.1.0"
   }
 }

@@ -4,9 +4,9 @@ class options {
      * @param {Options} options The options for fighting game module.
      */
     constructor(options) {
-        const { oneName = "Melee", oneEmoji = "⚔", twoName = "Ranged", twoEmoji = "🏹", threeName = "Defend", threeEmoji = "🛡", endName = "End Game", endEmoji = "❌", startHealth = 100, defenseSuccessRateAgainstDefense = 45, maxDefense = 15, minDefense = 3, maxMelee = 23, minMelee = 8, maxRanged = 18, minRanged = 8, defenseTimeoutRate = 30, meleeTimeoutRate = 20, meleeSuccessRate = 60, rangedTimeoutRate = 10, rangedSuccessRate = 45, defenseSuccessRateAgainstRanged = 10, defenseSuccessRateAgainstMelee = 30 } = options;
+        const { timeEndMessage = "{user} ran away from the battle", forceEndMessage = "{user} ended the game forcefully", startMessage = "The game has begun", midMessage = "Everyone chose their move, Current conditions :", endMessage = "Game ended, 👑 {winner} won", oneName = "Melee", oneEmoji = "⚔", twoName = "Ranged", twoEmoji = "🏹", threeName = "Defend", threeEmoji = "🛡", endName = "End Game", endEmoji = "❌", startHealth = 100, defenseSuccessRateAgainstDefense = 45, maxDefense = 15, minDefense = 3, maxMelee = 23, minMelee = 8, maxRanged = 18, minRanged = 8, defenseTimeoutRate = 30, meleeTimeoutRate = 20, meleeSuccessRate = 60, rangedTimeoutRate = 10, rangedSuccessRate = 45, defenseSuccessRateAgainstRanged = 10, defenseSuccessRateAgainstMelee = 30 } = options;
 
-        [oneName, oneEmoji, twoName, twoEmoji, threeName, threeEmoji, endName, endEmoji].forEach(v => {
+        [startMessage, midMessage, endMessage, oneName, oneEmoji, twoName, twoEmoji, threeName, threeEmoji, endName, endEmoji].forEach(v => {
             if (typeof (v) !== "string") throw new Error(`Invalid value : ${v}\nExpected a String`);
         })
 
@@ -20,6 +20,11 @@ class options {
             if (v[0] < v[i]) throw new Error(`Maximum ${i === 1 ? threeName : i === 2 ? oneName : twoName} attack points is less than their minimum point, Which is invalid`)
         })
 
+        this.startMessage = startMessage;
+        this.midMessage = midMessage;
+        this.endMessage = endMessage;
+        this.forceEndMessage = forceEndMessage;
+        this.timeEndMessage = timeEndMessage;
         this.oneName = oneName;
         this.oneEmoji = oneEmoji;
         this.twoName = twoName;
@@ -50,6 +55,11 @@ module.exports = options;
 
 /**
   * @typedef {Object} Options The options of fighting module
+  * @property {String} startMessage The message title during game's starting
+  * @property {String} midMessage The message title when both user chose their move
+  * @property {String} endMessage The message title at the end of the game
+  * @property {String} forceEndMessage The message title when game is ended forcefully
+  * @property {String} timeEndMessage The message title when user didn't responded to bot's DM
   * @property {String} oneName First move's name
   * @property {String} oneEmoji First move's emoji
   * @property {String} twoName Second move's name
