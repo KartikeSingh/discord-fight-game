@@ -4,7 +4,7 @@ class options {
      * @param {Options} options The options for fighting game module.
      */
     constructor(options) {
-        const { timeEndMessage = "{user} ran away from the battle", forceEndMessage = "{user} ended the game forcefully", startMessage = "The game has begun", midMessage = "Everyone chose their move, Current conditions :", endMessage = "Game ended, 👑 {winner} won", oneName = "Melee", oneEmoji = "⚔", twoName = "Ranged", twoEmoji = "🏹", threeName = "Defend", threeEmoji = "🛡", endName = "End Game", endEmoji = "❌", startHealth = 100, defenseSuccessRateAgainstDefense = 45, maxDefense = 15, minDefense = 3, maxMelee = 23, minMelee = 8, maxRanged = 18, minRanged = 8, defenseTimeoutRate = 30, meleeTimeoutRate = 20, meleeSuccessRate = 60, rangedTimeoutRate = 10, rangedSuccessRate = 45, defenseSuccessRateAgainstRanged = 10, defenseSuccessRateAgainstMelee = 30 } = options;
+        const { timeEndMessage = "{user} ran away from the battle", forceEndMessage = "{user} ended the game forcefully", startMessage = "The game has begun", midMessage = "Everyone chose their move, Current conditions :", endMessage = "Game ended, 👑 {winner} won", oneName = "Melee", oneEmoji = "⚔", twoName = "Ranged", twoEmoji = "🏹", threeName = "Defend", threeEmoji = "🛡", endName = "End Game", endEmoji = "❌", startHealth = 100, defenseSuccessRateAgainstDefense = 45, maxDefense = 15, minDefense = 3, maxMelee = 23, minMelee = 8, maxRanged = 18, minRanged = 8, defenseTimeoutRate = 30, meleeTimeoutRate = 20, meleeSuccessRate = 60, rangedTimeoutRate = 10, rangedSuccessRate = 45, defenseSuccessRateAgainstRanged = 10, defenseSuccessRateAgainstMelee = 30, moveTime = 30000 } = options;
 
         [startMessage, midMessage, endMessage, oneName, oneEmoji, twoName, twoEmoji, threeName, threeEmoji, endName, endEmoji].forEach(v => {
             if (typeof (v) !== "string") throw new Error(`Invalid value : ${v}\nExpected a String`);
@@ -20,6 +20,9 @@ class options {
             if (v[0] < v[i]) throw new Error(`Maximum ${i === 1 ? threeName : i === 2 ? oneName : twoName} attack points is less than their minimum point, Which is invalid`)
         })
 
+        if (typeof (moveTime) !== "number" || moveTime < 1000) throw new Error("Move time should be a number nd at least 1000 but we got " + JSON.stringify(moveTime));
+
+        this.moveTime = moveTime;
         this.startMessage = startMessage;
         this.midMessage = midMessage;
         this.endMessage = endMessage;

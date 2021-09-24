@@ -16,7 +16,7 @@ module.exports = function (player1, message, timeout) {
 
         const msg = await player1.send({ embeds: [{ color: "AQUA", title: `Choose your move, ${player1.username}` }], components: await getComponents.bind(that)(timeout) });
 
-        const collector = msg.createMessageComponentCollector({ filter: (i) => i.message.id === msg.id && i.customId.endsWith("_fight_game") && i.user.id === player1.id, time: 30000 });
+        const collector = msg.createMessageComponentCollector({ filter: (i) => i.message.id === msg.id && i.customId.endsWith("_fight_game") && i.user.id === player1.id, time: this.options.moveTime });
 
         collector.on('collect', (interaction) => {
             const move = parseInt(interaction.customId[0]);

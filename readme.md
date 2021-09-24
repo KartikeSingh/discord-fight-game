@@ -40,6 +40,9 @@ fight.duo(message,player2)
 const game = require('discord-fight-game');
 
 const fight = new game(client, {
+    // Settings
+    moveTime: 30000,
+
     // Custom Buttons
     oneName: "Sword",
     oneEmoji: "🤺",

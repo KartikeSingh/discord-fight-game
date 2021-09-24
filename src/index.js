@@ -17,6 +17,8 @@ class fight {
      * @param {Discord.Message} message The messages in which command was used
      */
     async solo(message) {
+        if (!message || typeof (message) !== "object" || !message.channel || !message.author) throw new Error("please provided a valid, message object\n\nFor support please contact us on discord : https://discord.gg/XYnMTQNTFh")
+
         let userHealth = this.options.startHealth, botHealth = this.options.startHealth, userTiemout = [];
         let msg = await message.channel.send({ embeds: [{ color: "DARK_NAVY", title: this.options.startMessage }] });
 
@@ -51,6 +53,12 @@ class fight {
      * @param {Discord.User} player2 The player 2
      */
     async duo(message, player2) {
+        if (!message || typeof (message) !== "object" || !message.channel || !message.author) throw new Error("please provided a valid, message object\n\nFor support please contact us on discord : https://discord.gg/XYnMTQNTFh")
+        if (!player2 || typeof (player2) !== "object" || !player2.username) throw new Error("please provided a valid, message object\n\nFor support please contact us on discord : https://discord.gg/XYnMTQNTFh")
+
+        if (player2.id === message.author.id) throw new Error("Player 2 can't be equal to the message author");
+        if (player2.bot) throw new Error("Player 2 can't be a bot");
+
         let userHealth = this.options.startHealth, user2Health = this.options.startHealth, userTiemout = [], user2Tiemout = [];
         let msg = await message.channel.send({ embeds: [{ color: "DARK_NAVY", title: this.options.startMessage }] });
 
