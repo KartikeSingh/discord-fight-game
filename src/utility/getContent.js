@@ -27,8 +27,6 @@ module.exports = function (result, player1, player2, player1move, player2move) {
         else content += `${player1.username} failed in using \`${player1move}\` on **${player2.username}**, and it backfired hence a total damage of ${result.P1damage} on them`;
     }
 
-    content += ` , Now ${player1.username}'s health is ${result.P1health < 0 ? 0 : result.P1health}`
-
     // Add Data for Player 2.
 
     // When Successfuly move
@@ -44,7 +42,7 @@ module.exports = function (result, player1, player2, player1move, player2move) {
         else content += `\n\n**${player2.username}** failed in using \`${player2move}\` on **${player1.username}**, and it backfired hence a total damage of ${result.P2damage} on **${player2.username}**`;
     }
 
-    content += ` , Now ${player2.username}'s health is ${result.P2health < 0 ? 0 : result.P2health}`
+    content += `\n\nNow\n**${player1.username}**'s health is **${result.P1health < 0 ? 0 : result.P1health}**\n**${player2.username}**'s health is **${result.P2health < 0 ? 0 : result.P2health}**`;
 
     return content;
 }

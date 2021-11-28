@@ -17,7 +17,9 @@ class fight {
      * @param {Discord.Message} message The messages in which command was used
      */
     async solo(message) {
-        if (!message || typeof (message) !== "object" || !message.channel || !message.author) throw new Error("please provided a valid, message object\n\nFor support please contact us on discord : https://discord.gg/XYnMTQNTFh")
+        if (!message || typeof (message) !== "object" || !message.channel || (!message.author && !message.user)) throw new Error("please provided a valid, message object\n\nFor support please contact us on discord : https://discord.gg/XYnMTQNTFh")
+
+        if (!message.author && message.user) message.author = message.user;
 
         let userHealth = this.options.startHealth, botHealth = this.options.startHealth, userTiemout = [];
         let msg = await message.channel.send({ embeds: [{ color: "DARK_NAVY", title: this.options.startMessage }] });
@@ -40,10 +42,17 @@ class fight {
             let content = getContent(result, message.author, this.client.user, userMove, user2Move);
             let title = this.options.midMessage;
 
-            if (botHealth < 1) title = this.options.endMessage.replace(/{winner}/g, message.author.username).replace(/{looser}/g, this.client.user.username);
-            else if (userHealth < 1) title = this.options.endMessage.replace(/{winner}/g, this.client.user.username).replace(/{looser}/g, message.author.username);
+            if (botHealth < 1 || userHealth < 1) {
+                msg.edit({ embeds: [{ title: title, description: content }] });
 
-            msg.edit({ embeds: [{ title: title, description: userHealth < 1 || botHealth < 1 ? "" : content }] });
+                if (botHealth < 1) title = this.options.endMessage.replace(/{winner}/g, message.author.username).replace(/{looser}/g, this.client.user.username);
+                else if (userHealth < 1) title = this.options.endMessage.replace(/{winner}/g, this.client.user.username).replace(/{looser}/g, message.author.username);
+
+                msg.channel.send({ embeds: [{ title: title, description: userHealth < 1 || botHealth < 1 ? "" : content }] });
+            } else
+                msg.edit({ embeds: [{ title: title, description: userHealth < 1 || botHealth < 1 ? "" : content }] });
+
+            await new Promise(res => setTimeout(res, 500));
         }
     }
 
@@ -53,8 +62,10 @@ class fight {
      * @param {Discord.User} player2 The player 2
      */
     async duo(message, player2) {
-        if (!message || typeof (message) !== "object" || !message.channel || !message.author) throw new Error("please provided a valid, message object\n\nFor support please contact us on discord : https://discord.gg/XYnMTQNTFh")
+        if (!message || typeof (message) !== "object" || !message.channel || (!message.author && !message.user)) throw new Error("please provided a valid, message object\n\nFor support please contact us on discord : https://discord.gg/XYnMTQNTFh")
         if (!player2 || typeof (player2) !== "object" || !player2.username) throw new Error("please provided a valid, message object\n\nFor support please contact us on discord : https://discord.gg/XYnMTQNTFh")
+
+        if (!message.author && message.user) message.author = message.user;
 
         if (player2.id === message.author.id) throw new Error("Player 2 can't be equal to the message author");
         if (player2.bot) throw new Error("Player 2 can't be a bot");
@@ -84,9 +95,18 @@ class fight {
             if (user2Health < 1) title = this.options.endMessage.replace(/{winner}/g, message.author.username).replace(/{looser}/g, player2.username);
             else if (userHealth < 1) title = this.options.endMessage.replace(/{looser}/g, message.author.username).replace(/{winner}/g, player2.username);
 
-            if (userHealth < 1 || user2Health < 1) content = "Game ended";
+            if (userHealth < 1 || user2Health < 1) {
+                msg.edit({ embeds: [{ title: title, description: content }] });
 
-            msg.edit({ embeds: [{ title: title, description: userHealth < 1 || user2Health < 1 ? "" : content }] });
+                if (user2Health < 1) title = this.options.endMessage.replace(/{winner}/g, message.author.username).replace(/{looser}/g, player2.username);
+                else if (userHealth < 1) title = this.options.endMessage.replace(/{looser}/g, message.author.username).replace(/{winner}/g, player2.username);
+
+                content = "Game ended";
+
+                msg.channel.send({ embeds: [{ title: title, description: userHealth < 1 || user2Health < 1 ? "" : content }] });
+            } else {
+                msg.edit({ embeds: [{ title: title, description: userHealth < 1 || user2Health < 1 ? "" : content }] });
+            }
         }
     }
 }
