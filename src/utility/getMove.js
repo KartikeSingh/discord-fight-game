@@ -26,7 +26,7 @@ module.exports = function (player1, message, timeout) {
                 interaction.update({ embeds: [{ color: "GREEN", title: "Game ended successfully" }], components: [] })
                 message.channel.send({ embeds: [{ color: "GREEN", title: that.options.forceEndMessage.replace(/{user}/g, player1.username) }] })
 
-                return resolve("end");
+                resolve("end");
             } else {
                 interaction.update({ components: [] })
 
