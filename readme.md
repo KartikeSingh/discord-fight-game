@@ -129,4 +129,4 @@ const fight = new game(client,{
 ```
 
 # Supports
-For support or issues or queries contace me on my [discord server](https://discord.gg/XYnMTQNTFh).
+For support or issues or queries contace me on my [discord server](https://discord.gg/QWguu9BY6g).

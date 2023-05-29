@@ -22,7 +22,7 @@ class fight {
         if (!message.author && message.user) message.author = message.user;
 
         let userHealth = this.options.startHealth, botHealth = this.options.startHealth, userTiemout = [];
-        let msg = await message.channel.send({ embeds: [{ color: "DARK_NAVY", title: this.options.startMessage }] });
+        let msg = await message.channel.send({ embeds: [{  title: this.options.startMessage }] });
 
         while (userHealth > 0 && botHealth > 0) {
             const userChoice = await getMove.bind(this)(message.author, message, userTiemout);
@@ -71,7 +71,7 @@ class fight {
         if (player2.bot) throw new Error("Player 2 can't be a bot");
 
         let userHealth = this.options.startHealth, user2Health = this.options.startHealth, userTiemout = [], user2Tiemout = [];
-        let msg = await message.channel.send({ embeds: [{ color: "DARK_NAVY", title: this.options.startMessage }] });
+        let msg = await message.channel.send({ embeds: [{ title: this.options.startMessage }] });
 
         while (userHealth > 0 && user2Health > 0) {
             const userChoice = await getMove.bind(this)(message.author, message, userTiemout);
